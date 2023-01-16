@@ -89,6 +89,8 @@ namespace TestGame
 			Console.Log( "[Game] Shutdown" );
 			mRootControl.QueueFree();
 			mRootControl = null;
+
+			mEntities.Clear();
 		}
 
 		public bool RunFrame( float delta )
@@ -140,7 +142,7 @@ namespace TestGame
 			mEntities = new();
 			mClient = new()
 			{
-				Controller = CreateAndSpawnEntity<Entities.Player>()
+				Controller = CreateEntity<Entities.Player>()
 			};
 
 			mWorldspawnNode = Assets.MapGeometry.CreateBrushModelNode( mMap.MapEntities[0] );
@@ -151,12 +153,12 @@ namespace TestGame
 				// TODO: MapEntity attribute that glues the classname to the class
 				switch ( mapEntity.ClassName )
 				{
-				case "light": entity = CreateAndSpawnEntity<Entities.Light>(); break;
-				case "func_detail": entity = CreateAndSpawnEntity<Entities.FuncDetail>(); break;
-				case "func_breakable": entity = CreateAndSpawnEntity<Entities.FuncBreakable>(); break;
-				case "func_rotating": entity = CreateAndSpawnEntity<Entities.FuncRotating>(); break;
-				case "func_water": entity = CreateAndSpawnEntity<Entities.FuncWater>(); break;
-				case "prop_test": entity = CreateAndSpawnEntity<Entities.PropTest>(); break;
+				case "light": entity = CreateEntity<Entities.Light>(); break;
+				case "func_detail": entity = CreateEntity<Entities.FuncDetail>(); break;
+				case "func_breakable": entity = CreateEntity<Entities.FuncBreakable>(); break;
+				case "func_rotating": entity = CreateEntity<Entities.FuncRotating>(); break;
+				case "func_water": entity = CreateEntity<Entities.FuncWater>(); break;
+				case "prop_test": entity = CreateEntity<Entities.PropTest>(); break;
 				default: Console.Log( $"[Game.SpawnEntity]: unknown map entity class '{mapEntity.ClassName}'", ConsoleMessageType.Developer ); return;
 				}
 
@@ -173,7 +175,7 @@ namespace TestGame
 			mEntities.ForEach( entity => entity.PostSpawn() );
 		}
 
-		private T CreateAndSpawnEntity<T>() where T : Entities.Entity, new()
+		private T CreateEntity<T>() where T : Entities.Entity, new()
 		{
 			T entity = new();
 			entity.Spawn();
@@ -183,7 +185,7 @@ namespace TestGame
 		}
 
 		private Client.Client? mClient;
-		private List<Entities.Entity>? mEntities;
+		private List<Entities.Entity> mEntities = new();
 		private Assets.MapDocument? mMap;
 		private Node3D mWorldspawnNode;
 
