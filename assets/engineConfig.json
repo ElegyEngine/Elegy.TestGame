@@ -1,0 +1,7 @@
+{
+	"configName": "Default",
+	"engineFolder": "engine",
+	"baseFolder": "game",
+
+	"enginePlugins": []
+}

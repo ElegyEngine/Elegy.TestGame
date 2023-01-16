@@ -1,0 +1,14 @@
+{
+	"title": "Test game",
+	"developer": "Admer456",
+	"publisher": "Middle Finger Co.",
+	"version": "v1.36",
+
+	"plugins": [
+		"plugins/testGame.json"
+	],
+
+	"mounts": [
+		"other_game"
+	]
+}
