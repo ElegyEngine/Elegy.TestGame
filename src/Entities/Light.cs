@@ -11,22 +11,31 @@ namespace TestGame.Entities
 
 			mLight = Nodes.CreateNode<OmniLight3D>();
 			mRootNode = mLight;
+
+			ShadowEnabled = true;
+			ShadowBias = 0.02f;
+			ShadowNormalBias = 1.2f;
+			ShadowMode = OmniLight3D.ShadowMode.Cube;
+
+			AngularDistance = 0.1f;
+			Attenuation = 1.0f;
+			IndirectEnergy = 2.0f;
+			PointLightSize = 0.4f;
+			VolumetricFogEnergy = 1.5f;
+
+			Colour = Colors.White;
+			Energy = 1.0f;
+			Range = 6.5f;
 		}
 
 		public override void KeyValue( Dictionary<string, string> pairs )
 		{
 			base.KeyValue( pairs );
 
-			if ( pairs.TryGetValue( "targetname", out string targetname ) )
+			if ( pairs.TryGetValue( "targetname", out string? targetname ) )
 			{
 				mLight.Name = targetname;
 			}
-
-			mLight.OmniAttenuation = 1.0f;
-			mLight.OmniShadowMode = OmniLight3D.ShadowMode.Cube;
-			mLight.ShadowEnabled = true;
-			mLight.ShadowBias = 0.02f;
-			mLight.ShadowNormalBias = 1.2f;
 
 			if ( pairs.ContainsKey( "_light" ) )
 			{
@@ -37,23 +46,79 @@ namespace TestGame.Entities
 				}
 
 				// Convert from [0-255] to [0-1]
-				lightValues = lightValues * (1.0f / 255.0f);
+				lightValues /= 255.0f;
 
-				mLight.LightColor = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
-				mLight.LightEnergy = lightValues.w;
-				mLight.OmniRange = Mathf.Sqrt( lightValues.w ) * 10.0f;
+				Colour = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
+				Energy = lightValues.w * 1.2f;
+				Range = Mathf.Sqrt( lightValues.w ) * 12.0f;
 			}
-			else
+
+			if ( pairs.TryGetValue( "_pointsize", out string? pointsize ) )
 			{
-				mLight.LightColor = Color.Color8( 255, 255, 255 );
-				mLight.LightEnergy = 1.0f;
-				mLight.OmniRange = 6.5f;
+				PointLightSize = Parse.Float( pointsize );
 			}
+		}
 
-			mLight.LightIndirectEnergy = 1.5f;
-			mLight.LightVolumetricFogEnergy = 1.5f;
-			mLight.LightSize = 1.5f;
-			mLight.LightAngularDistance = 0.1f;
+		public float AngularDistance
+		{
+			get => mLight.LightAngularDistance;
+			set => mLight.LightAngularDistance = value;
+		}
+		public float Attenuation
+		{
+			get => mLight.OmniAttenuation;
+			set => mLight.OmniAttenuation = value;
+		}
+		public Color Colour
+		{
+			get => mLight.LightColor;
+			set => mLight.LightColor = value;
+		}
+		public float Energy
+		{
+			get => mLight.LightEnergy;
+			set => mLight.LightEnergy = value;
+		}
+		public float IndirectEnergy
+		{
+			get => mLight.LightIndirectEnergy;
+			set => mLight.LightIndirectEnergy = value;
+		}
+		public float Range
+		{
+			get => mLight.OmniRange;
+			set => mLight.OmniRange = value;
+		}
+		public float PointLightSize
+		{
+			get => mLight.LightSize;
+			// mLight.LightSize = X does not work straight away when spawning...
+			set => mLight.SetDeferred( "light_size", value );
+		}
+		public float ShadowBias
+		{
+			get => mLight.ShadowBias;
+			set => mLight.ShadowBias = value;
+		}
+		public float ShadowNormalBias
+		{
+			get => mLight.ShadowNormalBias;
+			set => mLight.ShadowNormalBias = value;
+		}
+		public bool ShadowEnabled
+		{
+			get => mLight.ShadowEnabled;
+			set => mLight.ShadowEnabled = value;
+		}
+		public OmniLight3D.ShadowMode ShadowMode
+		{
+			get => mLight.OmniShadowMode;
+			set => mLight.OmniShadowMode = value;
+		}
+		public float VolumetricFogEnergy
+		{
+			get => mLight.LightVolumetricFogEnergy;
+			set => mLight.LightVolumetricFogEnergy = value;
 		}
 
 		OmniLight3D mLight;
