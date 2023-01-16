@@ -91,6 +91,12 @@ namespace TestGame
 			mRootControl = null;
 
 			mEntities.Clear();
+			mClient = null;
+		}
+
+		public static float GetTimeSeconds()
+		{
+			return Time.GetTicksMsec() * 0.001f;
 		}
 
 		public bool RunFrame( float delta )
@@ -111,21 +117,30 @@ namespace TestGame
 				mEscapeWasHeld = false;
 			}
 
-			mEntities?.ForEach( entity => entity.Think() );
-			mClient?.Update();
-			mClient?.UpdateController();
+			if ( mGameIsLoaded )
+			{
+				mEntities.ForEach( entity => entity.Think() );
+				mClient.Update();
+				mClient.UpdateController();
+			}
 
 			return !mUserWantsToExit;
 		}
 
 		public void RunPhysicsFrame( float delta )
 		{
-			mEntities?.ForEach( entity => entity.PhysicsUpdate( delta ) );
+			if ( mGameIsLoaded )
+			{
+				mEntities.ForEach( entity => entity.PhysicsUpdate( delta ) );
+			}
 		}
 
 		public void HandleInput( InputEvent @event )
 		{
-			mClient?.UserInput( @event );
+			if ( mGameIsLoaded )
+			{
+				mClient.UserInput( @event );
+			}
 		}
 
 		private void StartGame( string mapFile )
@@ -173,6 +188,8 @@ namespace TestGame
 			} );
 
 			mEntities.ForEach( entity => entity.PostSpawn() );
+
+			mGameIsLoaded = true;
 		}
 
 		private T CreateEntity<T>() where T : Entities.Entity, new()
@@ -189,6 +206,7 @@ namespace TestGame
 		private Assets.MapDocument? mMap;
 		private Node3D mWorldspawnNode;
 
+		private bool mGameIsLoaded = false;
 		private bool mEscapeWasHeld = false;
 		private Control mRootControl;
 		private bool mUserWantsToExit = false;
