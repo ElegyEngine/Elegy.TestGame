@@ -74,7 +74,7 @@ namespace TestGame
 			{
 				StartGame( "maps/test" );
 			} );
-			
+
 			buttonTextAction( container, "Exit", () =>
 			{
 				Console.Log( "[Game] Exiting..." );
@@ -92,11 +92,6 @@ namespace TestGame
 
 			mEntities.Clear();
 			mClient = null;
-		}
-
-		public static float GetTimeSeconds()
-		{
-			return Time.GetTicksMsec() * 0.001f;
 		}
 
 		public bool RunFrame( float delta )
