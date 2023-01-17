@@ -7,7 +7,26 @@ namespace TestGame.Assets
 {
 	public class MapGeometry
 	{
-		private static void CreateBrushPolygons( ref List<MapFace> faces, float radius = 2048.0f, float scale = 1.0f / 39.37f )
+		private static void IntersectPolygonWithOthers( ref Polygon3D polygon, List<MapFace> faces, int skipIndex )
+		{
+			for ( int i = 0; i < faces.Count; i++ )
+			{
+				Plane intersector = faces[i].Plane;
+				if ( i == skipIndex )
+				{
+					continue;
+				}
+
+				var splitResult = polygon.Split( intersector );
+				if ( splitResult.DidIntersect )
+				{
+					// Modify the polygon we started off from
+					polygon = splitResult.Back ?? polygon;
+				}
+			}
+		}
+
+		private static void CreateBrushPolygons( ref List<MapFace> faces, float radius = 768.0f, float scale = 1.0f / 39.37f )
 		{
 			for ( int i = 0; i < faces.Count; i++ )
 			{
@@ -22,21 +41,7 @@ namespace TestGame.Assets
 				poly.Shift( shift );
 
 				// Intersect current face with all other faces
-				for ( int p = 0; p < faces.Count; p++ )
-				{
-					Plane intersector = faces[p].Plane;
-					if ( i == p )
-					{
-						continue;
-					}
-
-					var splitResult = poly.Split( intersector );
-					if ( splitResult.DidIntersect )
-					{
-						// Modify the polygon we started off from
-						poly = splitResult.Back ?? poly;
-					}
-				}
+				IntersectPolygonWithOthers( ref poly, faces, i );
 
 				// Axis:    Quake: Godot:
 				// Forward  +X     -Z
