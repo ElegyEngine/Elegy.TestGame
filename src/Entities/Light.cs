@@ -12,7 +12,7 @@ namespace TestGame.Entities
 			mLight = Nodes.CreateNode<OmniLight3D>();
 			mRootNode = mLight;
 
-			ShadowEnabled = true;
+			ShadowEnabled = false;
 			ShadowBias = 0.02f;
 			ShadowNormalBias = 1.2f;
 			ShadowMode = OmniLight3D.ShadowMode.Cube;
@@ -56,6 +56,11 @@ namespace TestGame.Entities
 			if ( pairs.TryGetValue( "_pointsize", out string? pointsize ) )
 			{
 				PointLightSize = Parse.Float( pointsize );
+			}
+
+			if ( pairs.TryGetValue( "_shadows", out string? shadows ) )
+			{
+				ShadowEnabled = shadows != "0";
 			}
 		}
 
