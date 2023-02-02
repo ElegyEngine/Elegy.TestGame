@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elegy.Engine" Version="0.1.0-dev008" />
+    <PackageReference Include="Elegy.Engine" Version="0.1.0-dev.1" />
   </ItemGroup>
 
 </Project>
