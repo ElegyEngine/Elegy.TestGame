@@ -280,8 +280,17 @@ namespace TestGame.Assets
 				}
 			}
 
-			entity.Pairs.TryGetValue( "classname", out entity.ClassName );
-			if ( entity.Pairs.TryGetValue( "origin", out string originString ) )
+			if ( entity.Pairs.TryGetValue( "classname", out string? className ) )
+			{
+				entity.ClassName = className;
+			}
+			else
+			{
+				Console.Warning( $"[MapDocument] Entity does not have a classname! {lex.GetLineInfo()}" );
+				entity.ClassName = "__empty";
+			}
+
+			if ( entity.Pairs.TryGetValue( "origin", out string? originString ) )
 			{
 				entity.Centre = originString.ToVector3().ToGodot();
 				entity.Pairs["origin"] = $"{entity.Centre.x} {entity.Centre.y} {entity.Centre.z}";
