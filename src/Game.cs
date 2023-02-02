@@ -203,7 +203,7 @@ namespace TestGame
 
 		private bool mGameIsLoaded = false;
 		private bool mEscapeWasHeld = false;
-		private Control mRootControl;
+		private Control? mRootControl = null;
 		private bool mUserWantsToExit = false;
 	}
 }

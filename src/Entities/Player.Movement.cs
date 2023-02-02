@@ -112,7 +112,7 @@ namespace TestGame.Entities
 				float dot = groundNormal.Dot( Vector3.Up );
 				//bool tooSteep = dot < 0.7f;
 				//float overbounce = 1.0f + (tooSteep ? 1.0f * GameBounce * (1.0f - GameFriction) : 0.0f);
-				float overbounce = 1.0f;
+				//float overbounce = 1.0f;
 
 				//downVelocity = downVelocity.Slide( groundNormal ) * (1.0f - downVelocity.Dot( groundNormal ));
 				//downVelocity = ClipVelocity( delta, downVelocity, groundNormal, overbounce );

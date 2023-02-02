@@ -9,8 +9,8 @@ namespace TestGame.Assets
 	public class MapMaterial
 	{
 		public string Name = string.Empty;
-		public Material EngineMaterial = null;
-		public ImageTexture DiffuseTexture = null;
+		public Material EngineMaterial;
+		public ImageTexture DiffuseTexture;
 
 		public int Width => DiffuseTexture?.GetWidth() ?? 128;
 		public int Height => DiffuseTexture?.GetHeight() ?? 128;
@@ -116,7 +116,7 @@ namespace TestGame.Assets
 
 		// Filled in later
 		public Polygon3D Polygon = new();
-		public MapMaterial Material = null;
+		public MapMaterial Material;
 	}
 
 	public class MapBrush

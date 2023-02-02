@@ -18,7 +18,7 @@ namespace TestGame.Entities
 
 			try
 			{
-				if ( pairs.TryGetValue( "model", out string modelPath ) )
+				if ( pairs.TryGetValue( "model", out string? modelPath ) )
 				{
 					mMesh = mRootNode.CreateChild<MeshInstance3D>();
 					mMesh.Mesh = Assets.GLTFModel.Load( modelPath );

@@ -1,6 +1,8 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace TestGame.Entities
 {
 	public abstract class Entity
@@ -49,7 +51,8 @@ namespace TestGame.Entities
 			}
 		}
 
-		protected Node3D mRootNode = null;
+		[NotNull]
+		protected Node3D? mRootNode = null;
 		protected List<Node> mComponents = new();
 	}
 }

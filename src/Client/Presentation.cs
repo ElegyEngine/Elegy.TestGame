@@ -35,7 +35,7 @@ namespace TestGame.Client
 		public Vector3 Position { get => mCamera.Position; set => mCamera.Position = value; }
 		public Vector3 Angles { get => mCamera.Rotation; set => mCamera.Rotation = value; }
 
-		private Node3D mNodeToTrack = null;
+		private Node3D? mNodeToTrack = null;
 		private Camera3D mCamera;
 	}
 }

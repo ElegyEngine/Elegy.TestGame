@@ -5,7 +5,7 @@ namespace TestGame.Assets
 {
 	public class GLTFModel
 	{
-		public static ArrayMesh Load( string path )
+		public static ArrayMesh? Load( string path )
 		{
 			if ( !FileSystem.Exists( path, PathFlags.File ) )
 			{
