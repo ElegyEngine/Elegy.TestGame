@@ -43,19 +43,19 @@ namespace TestGame.Entities
 
 			st.SetBones( new int[] { 0, 1, 0, 0 } );
 			st.SetWeights( new float[] { 1.0f, 0.0f, 0.0f, 0.0f } );
-			st.SetUv( new( 0.0f, 0.0f ) );
+			st.SetUV( new( 0.0f, 0.0f ) );
 			st.SetNormal( new( 0.0f, 1.0f, 0.0f ) );
 			st.AddVertex( new( 0.0f, 0.0f, 0.0f ) );
 
 			st.SetBones( new int[] { 0, 1, 0, 0 } );
 			st.SetWeights( new float[] { 1.0f, 0.0f, 0.0f, 0.0f } );
-			st.SetUv( new( 0.0f, 1.0f ) );
+			st.SetUV( new( 0.0f, 1.0f ) );
 			st.SetNormal( new( 0.0f, 1.0f, 0.0f ) );
 			st.AddVertex( new( 0.0f, 0.0f, -1.0f ) );
 
 			st.SetBones( new int[] { 0, 1, 0, 0 } );
 			st.SetWeights( new float[] { 0.0f, 1.0f, 0.0f, 0.0f } );
-			st.SetUv( new( 1.0f, 0.0f ) );
+			st.SetUV( new( 1.0f, 0.0f ) );
 			st.SetNormal( new( 0.0f, 1.0f, 0.0f ) );
 			st.AddVertex( new( 1.0f, 0.0f, 0.0f ) );
 
@@ -70,7 +70,7 @@ namespace TestGame.Entities
 			AnimationLibrary animationLibrary = new();
 
 			Animation idleAnimation = new();
-			int positionTrack = idleAnimation.AddTrack( Animation.TrackType.Position3d );
+			int positionTrack = idleAnimation.AddTrack( Animation.TrackType.Position3D );
 			idleAnimation.TrackSetPath( positionTrack, $"Skeleton3D:tail_bone" );
 			idleAnimation.PositionTrackInsertKey( positionTrack, 0.0, Vector3.Zero );
 			idleAnimation.PositionTrackInsertKey( positionTrack, 1.0, Vector3.Up );
@@ -90,10 +90,10 @@ namespace TestGame.Entities
 			mSkeleton.GlobalPosition = mRootNode.GlobalPosition;
 			// Bone in the centre of the model
 			mSkeleton.AddBone( "root_bone" );
-			mSkeleton.SetBoneRest( 0, new Transform3D( Quaternion.Identity, Vector3.Zero ) );
+			mSkeleton.SetBoneRest( 0, new Transform3D( Basis.Identity, Vector3.Zero ) );
 			// Bone that is positioned roughly on 1,0,0
 			mSkeleton.AddBone( "tail_bone" );
-			mSkeleton.SetBoneRest( 1, new Transform3D( Quaternion.Identity, Vector3.Left ) );
+			mSkeleton.SetBoneRest( 1, new Transform3D( Basis.Identity, Vector3.Left ) );
 
 			mMesh = mSkeleton.CreateChild<MeshInstance3D>();
 			mMesh.Mesh = CreateTestMesh();

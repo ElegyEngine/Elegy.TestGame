@@ -14,8 +14,8 @@ namespace TestGame.Assets
 				return null;
 			}
 
-			GLTFState state = new();
-			GLTFDocument document = new();
+			GltfState state = new();
+			GltfDocument document = new();
 			if ( document.AppendFromFile( FileSystem.PathTo( path, PathFlags.File ), state ) != Error.Ok )
 			{
 				Console.Error( "Boohoo" );

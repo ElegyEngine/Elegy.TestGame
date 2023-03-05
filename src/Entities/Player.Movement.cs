@@ -64,7 +64,7 @@ namespace TestGame.Entities
 				// Friction
 				mBody.Velocity *= 0.85f;
 
-				if ( mLastCommands.MovementDirection.y > 0.0f )
+				if ( mLastCommands.MovementDirection.Y > 0.0f )
 				{
 					mBody.Velocity += Vector3.Up * JumpForce * delta;
 				}

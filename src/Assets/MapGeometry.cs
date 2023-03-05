@@ -76,7 +76,7 @@ namespace TestGame.Assets
 
 			for ( int vertexId = 0; vertexId < surface.Vertices.Count; vertexId++ )
 			{
-				builder.SetUv( surface.Uvs[vertexId] );
+				builder.SetUV( surface.Uvs[vertexId] );
 				builder.SetNormal( surface.Normals[vertexId] );
 				builder.AddVertex( surface.Vertices[vertexId] );
 			}
@@ -90,7 +90,7 @@ namespace TestGame.Assets
 		public static Node3D CreateBrushModelNode( MapEntity brushEntity )
 		{
 			Vector3 brushOrigin = GetBrushOrigin( brushEntity ).ToGodot();
-			brushEntity.Pairs["origin"] = $"{brushOrigin.x} {brushOrigin.y} {brushOrigin.z}";
+			brushEntity.Pairs["origin"] = $"{brushOrigin.X} {brushOrigin.Y} {brushOrigin.Z}";
 			
 			brushEntity.Brushes.ForEach( brush => CreateBrushPolygons( ref brush.Faces ) );
 

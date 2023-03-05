@@ -37,7 +37,7 @@ namespace TestGame.Entities
 		{
 			Move( delta );
 
-			mBody.GlobalRotation = new Vector3( 0.0f, mLastCommands.ViewAngles.y, 0.0f );
+			mBody.GlobalRotation = new Vector3( 0.0f, mLastCommands.ViewAngles.Y, 0.0f );
 		}
 
 		public void HandleClientInput( ClientCommands commands )

@@ -22,8 +22,8 @@ namespace TestGame.Client
 		public void Update()
 		{
 			Basis basis = new Basis( Quaternion.FromEuler( mAngles * new Vector3( 0.0f, 1.0f, 0.0f ) ) );
-			Vector3 viewForward = -basis.z;
-			Vector3 viewRight = basis.x;
+			Vector3 viewForward = -basis.Z;
+			Vector3 viewRight = basis.X;
 
 			mMovementDirection = Vector3.Zero;
 
@@ -56,8 +56,8 @@ namespace TestGame.Client
 			mMousePositionDeltaSmooth = mMousePositionDeltaSmooth.Lerp( mMousePositionDelta, 0.99f );
 			//mMousePositionDeltaSmooth = mMousePositionDelta;
 
-			mAngles.y -= mMousePositionDeltaSmooth.x * 0.001f;
-			mAngles.x -= mMousePositionDeltaSmooth.y * 0.001f;
+			mAngles.Y -= mMousePositionDeltaSmooth.X * 0.001f;
+			mAngles.X -= mMousePositionDeltaSmooth.Y * 0.001f;
 
 			mCommands.MovementDirection = mMovementDirection;
 			mCommands.ViewAngles = mAngles;

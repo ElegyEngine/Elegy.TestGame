@@ -30,7 +30,7 @@ namespace TestGame
 
 			var setupControlAutoexpand = ( Control node, bool anchor ) =>
 			{
-				const int sizeFlags = (int)Control.SizeFlags.ExpandFill;
+				const Control.SizeFlags sizeFlags = Control.SizeFlags.ExpandFill;
 				node.SizeFlagsHorizontal = sizeFlags;
 				node.SizeFlagsVertical = sizeFlags;
 				if ( anchor )

@@ -104,13 +104,13 @@ namespace TestGame.Assets
 
 		public Vector2 CalculateUV( Vector3 point, int imageWidth, int imageHeight, float scale = 39.37f )
 		{
-			Vector3 axisU = ProjectionUVS[0].ToVector3().ToGodot() * (1.0f / Scale.x) * scale * scale;
-			Vector3 axisV = ProjectionUVS[1].ToVector3().ToGodot() * (1.0f / Scale.y) * scale * scale;
+			Vector3 axisU = ProjectionUVS[0].ToVector3().ToGodot() * (1.0f / Scale.X) * scale * scale;
+			Vector3 axisV = ProjectionUVS[1].ToVector3().ToGodot() * (1.0f / Scale.Y) * scale * scale;
 
 			return new()
 			{
-				x = (point.Dot( axisU ) + ProjectionUVS[0].w) / imageWidth,
-				y = (point.Dot( axisV ) + ProjectionUVS[1].w) / imageHeight
+				X = (point.Dot( axisU ) + ProjectionUVS[0].W) / imageWidth,
+				Y = (point.Dot( axisV ) + ProjectionUVS[1].W) / imageHeight
 			};
 		}
 
@@ -122,14 +122,14 @@ namespace TestGame.Assets
 	public class MapBrush
 	{
 		public Vector3 Centre = Vector3.Zero;
-		public AABB BoundingBox = new();
+		public Aabb BoundingBox = new();
 		public List<MapFace> Faces = new();
 	}
 
 	public class MapEntity
 	{
 		public Vector3 Centre = Vector3.Zero;
-		public AABB BoundingBox = new();
+		public Aabb BoundingBox = new();
 		public List<MapBrush> Brushes = new();
 
 		public string ClassName = string.Empty;
@@ -151,9 +151,9 @@ namespace TestGame.Assets
 					throw new Exception( $"Expected '(' {lex.GetLineInfo()}" );
 				}
 
-				face.PlaneDefinition[i].x = Parse.Float( lex.Next() );
-				face.PlaneDefinition[i].y = Parse.Float( lex.Next() );
-				face.PlaneDefinition[i].z = Parse.Float( lex.Next() );
+				face.PlaneDefinition[i].X = Parse.Float( lex.Next() );
+				face.PlaneDefinition[i].Y = Parse.Float( lex.Next() );
+				face.PlaneDefinition[i].Z = Parse.Float( lex.Next() );
 				
 				// Eat the )
 				if ( !lex.Expect( ")", true ) )
@@ -182,13 +182,13 @@ namespace TestGame.Assets
 				}
 
 				string token = lex.Next();
-				face.ProjectionUVS[i].x = Parse.Float( token );
+				face.ProjectionUVS[i].X = Parse.Float( token );
 				token = lex.Next();
-				face.ProjectionUVS[i].y = Parse.Float( token );
+				face.ProjectionUVS[i].Y = Parse.Float( token );
 				token = lex.Next();
-				face.ProjectionUVS[i].z = Parse.Float( token );
+				face.ProjectionUVS[i].Z = Parse.Float( token );
 				token = lex.Next();
-				face.ProjectionUVS[i].w = Parse.Float( token );
+				face.ProjectionUVS[i].W = Parse.Float( token );
 
 				if ( !lex.Expect( "]", true ) )
 				{
@@ -197,8 +197,8 @@ namespace TestGame.Assets
 			}
 
 			face.Rotation = Parse.Float( lex.Next() );
-			face.Scale.x = Parse.Float( lex.Next() );
-			face.Scale.y = Parse.Float( lex.Next() );
+			face.Scale.X = Parse.Float( lex.Next() );
+			face.Scale.Y = Parse.Float( lex.Next() );
 
 			return face;
 		}
@@ -234,7 +234,7 @@ namespace TestGame.Assets
 				}
 			}
 
-			brush.BoundingBox = new AABB( brush.Faces[0].Centre, Vector3.One * 0.001f );
+			brush.BoundingBox = new Aabb( brush.Faces[0].Centre, Vector3.One * 0.001f );
 			brush.Faces.ForEach( face =>
 			{
 				for ( int i = 0; i < 3; i++  )
@@ -293,7 +293,7 @@ namespace TestGame.Assets
 			if ( entity.Pairs.TryGetValue( "origin", out string? originString ) )
 			{
 				entity.Centre = originString.ToVector3().ToGodot();
-				entity.Pairs["origin"] = $"{entity.Centre.x} {entity.Centre.y} {entity.Centre.z}";
+				entity.Pairs["origin"] = $"{entity.Centre.X} {entity.Centre.Y} {entity.Centre.Z}";
 			}
 
 			if ( entity.Brushes.Count > 0 )

@@ -40,17 +40,17 @@ namespace TestGame.Entities
 			if ( pairs.ContainsKey( "_light" ) )
 			{
 				Vector4 lightValues = pairs["_light"].ToVector4();
-				if ( lightValues.w == 0.0f )
+				if ( lightValues.W == 0.0f )
 				{
-					lightValues.w = 300.0f;
+					lightValues.W = 300.0f;
 				}
 
 				// Convert from [0-255] to [0-1]
 				lightValues /= 255.0f;
 
-				Colour = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
-				Energy = lightValues.w * 1.2f;
-				Range = Mathf.Sqrt( lightValues.w ) * 12.0f;
+				Colour = new Color( lightValues.X, lightValues.Y, lightValues.Z, 1.0f );
+				Energy = lightValues.W * 1.2f;
+				Range = Mathf.Sqrt( lightValues.W ) * 12.0f;
 			}
 
 			if ( pairs.TryGetValue( "_pointsize", out string? pointsize ) )
