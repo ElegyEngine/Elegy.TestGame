@@ -26,7 +26,7 @@ namespace TestGame.Assets
 			}
 		}
 
-		private static void CreateBrushPolygons( ref List<MapFace> faces, float radius = 768.0f, float scale = 1.0f / 39.37f )
+		private static void CreateBrushPolygons( ref List<MapFace> faces, float radius = 4096.0f, float scale = 1.0f / 39.37f )
 		{
 			for ( int i = 0; i < faces.Count; i++ )
 			{
