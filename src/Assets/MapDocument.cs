@@ -44,6 +44,7 @@ namespace TestGame.Assets
 			if ( !FileSystem.Exists( path ) )
 			{
 				Console.Error( $"Cannot find image '{path}', oops" );
+				Materials.Add( materialName, Default ); // Performance optimisation
 				return Default;
 			}
 
