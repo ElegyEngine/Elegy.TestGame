@@ -73,7 +73,7 @@ namespace TestGame.Assets
 				material.AlphaScissorThreshold = 0.5f;
 				//material.CullMode = BaseMaterial3D.CullModeEnum.Disabled;
 			}
-			else if ( materialName[0] == '!' || materialName.StartsWith( "WATER" ) )
+			else if ( materialName[0] == '!' || materialName.StartsWith( "WATER" ) || materialName.Contains( "GLASS" ) )
 			{
 				material.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
 				material.AlbedoColor = new Color( 1.0f, 1.0f, 1.0f, 0.5f );
