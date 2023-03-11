@@ -200,6 +200,18 @@ namespace TestGame.Assets
 			face.Scale.X = Parse.Float( lex.Next() );
 			face.Scale.Y = Parse.Float( lex.Next() );
 
+			// This is an ugly, hacky way to support Quake 3's blessed map format
+			string nextToken = lex.Peek();
+			while ( nextToken != "}" && nextToken != "(" )
+			{
+				lex.Next();
+				nextToken = lex.Peek();
+				if ( nextToken == "}" || nextToken == "(" )
+				{
+					break;
+				}
+			}
+
 			return face;
 		}
 
