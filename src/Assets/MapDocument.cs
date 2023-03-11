@@ -15,7 +15,7 @@ namespace TestGame.Assets
 		public int Width => DiffuseTexture?.GetWidth() ?? 128;
 		public int Height => DiffuseTexture?.GetHeight() ?? 128;
 
-		public static List<MapMaterial> Materials { get; private set; } = new();
+		public static Dictionary<string, MapMaterial> Materials { get; private set; } = new();
 
 		public readonly static MapMaterial Default = new()
 		{
@@ -35,8 +35,7 @@ namespace TestGame.Assets
 				return Default;
 			}
 
-			MapMaterial? existingMaterial = Materials.Find( material => material.Name == materialName );
-			if ( existingMaterial != null )
+			if ( Materials.TryGetValue( materialName, out MapMaterial? existingMaterial ) )
 			{
 				return existingMaterial;
 			}
@@ -79,13 +78,14 @@ namespace TestGame.Assets
 				material.AlbedoColor = new Color( 1.0f, 1.0f, 1.0f, 0.5f );
 			}
 
-			Materials.Add( new()
+			MapMaterial mapMaterial = new()
 			{
 				Name = materialName,
 				EngineMaterial = material,
 				DiffuseTexture = texture
-			} );
-			return Materials.Last();
+			};
+			Materials.Add( materialName, mapMaterial );
+			return mapMaterial;
 		}
 	}
 
