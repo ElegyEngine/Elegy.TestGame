@@ -28,7 +28,11 @@ namespace TestGame.Entities
 
 		public virtual void Destroy()
 		{
+			mComponents.ForEach( comp => comp.QueueFree() );
+			mComponents.Clear();
 
+			mRootNode?.QueueFree();
+			mRootNode = null;
 		}
 
 		public virtual void Think()
