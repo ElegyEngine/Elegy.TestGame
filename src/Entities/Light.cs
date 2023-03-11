@@ -62,6 +62,10 @@ namespace TestGame.Entities
 			{
 				ShadowEnabled = shadows != "0";
 			}
+			else
+			{
+				ShadowEnabled = true;
+			}
 		}
 
 		public float AngularDistance
