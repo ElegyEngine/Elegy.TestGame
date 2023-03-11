@@ -28,58 +28,24 @@ namespace TestGame
 		{
 			Console.Log( "[Game] Start" );
 
-			var setupControlAutoexpand = ( Control node, bool anchor ) =>
+			mMenu.OnNewGame = ( string mapName ) =>
 			{
-				const Control.SizeFlags sizeFlags = Control.SizeFlags.ExpandFill;
-				node.SizeFlagsHorizontal = sizeFlags;
-				node.SizeFlagsVertical = sizeFlags;
-				if ( anchor )
-				{
-					node.LayoutMode = 1;
-				}
-				node.SetAnchorsPreset( Control.LayoutPreset.FullRect );
-				return node;
+				StartGame( mapName );
+				mMenu.Visible = false;
 			};
 
-			var buttonTextAction = ( Control parent, string text, Action? onPressed ) =>
+			mMenu.OnLeaveGame = () =>
 			{
-				var button = parent.CreateChild<Button>();
-				button.Text = text;
-				if ( onPressed != null )
-				{
-					button.Pressed += onPressed;
-				}
-				return button;
+				LeaveGame();
 			};
 
-			mRootControl = setupControlAutoexpand( Nodes.CreateNode<Control>(), true );
-			mRootControl.Size = mRootControl.GetViewportRect().Size;
-
-			var panel = setupControlAutoexpand( mRootControl.CreateChild<Panel>(), true );
-			panel.Size = mRootControl.Size;
-
-			var hbox = setupControlAutoexpand( panel.CreateChild<HBoxContainer>(), true );
-			hbox.Size = mRootControl.Size;
-
-			var containerLeft = setupControlAutoexpand( hbox.CreateChild<VBoxContainer>(), true );
-			// setupControlAutoexpand strictly returns Control, so we cast here for Alignment
-			var container = setupControlAutoexpand( hbox.CreateChild<VBoxContainer>(), true ) as VBoxContainer;
-			var containerRight = setupControlAutoexpand( hbox.CreateChild<VBoxContainer>(), true );
-
-			container.CustomMinimumSize = new( 200.0f, 50.0f );
-			container.Alignment = BoxContainer.AlignmentMode.Center;
-			container.SizeFlagsStretchRatio = 0.25f;
-
-			buttonTextAction( container, "Click me", () =>
+			mMenu.OnExit = () =>
 			{
-				StartGame( "maps/test" );
-			} );
-
-			buttonTextAction( container, "Exit", () =>
-			{
-				Console.Log( "[Game] Exiting..." );
+				LeaveGame();
 				mUserWantsToExit = true;
-			} );
+			};
+
+			mMenu.Init();
 
 			return true;
 		}
@@ -87,11 +53,22 @@ namespace TestGame
 		public void Shutdown()
 		{
 			Console.Log( "[Game] Shutdown" );
-			mRootControl.QueueFree();
-			mRootControl = null;
-
+			
 			mEntities.Clear();
 			mClient = null;
+		}
+
+		private void ToggleMenu()
+		{
+			if ( !mGameIsLoaded )
+			{
+				mMenu.Visible = true;
+				Input.MouseMode = Input.MouseModeEnum.Visible;
+				return;
+			}
+
+			mMenu.Visible = !mMenu.Visible;
+			Input.MouseMode = mMenu.Visible ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
 		}
 
 		public bool RunFrame( float delta )
@@ -102,8 +79,7 @@ namespace TestGame
 			{
 				if ( !mEscapeWasHeld )
 				{
-					mRootControl.Visible = !mRootControl.Visible;
-					Input.MouseMode = mRootControl.Visible ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
+					ToggleMenu();
 				}
 				mEscapeWasHeld = true;
 			}
@@ -140,21 +116,17 @@ namespace TestGame
 
 		private void StartGame( string mapFile )
 		{
-			Console.Log( $"[Game] Starting '{mapFile}'" );
+			Console.Log( $"[Game] Starting 'maps/{mapFile}'" );
 
-			mMap = Assets.MapDocument.FromValve220MapFile( $"{mapFile}.map" );
+			mMap = Assets.MapDocument.FromValve220MapFile( $"maps/{mapFile}" );
 			if ( mMap == null )
 			{
-				Console.Error( $"[Game.StartGame] Failed to load '{mapFile}'" );
+				Console.Error( $"[Game.StartGame] Failed to load 'maps/{mapFile}'" );
 				return;
 			}
 
 			mEntities = new();
-			mClient = new()
-			{
-				Controller = CreateEntity<Entities.Player>()
-			};
-
+			
 			mWorldspawnNode = Assets.MapGeometry.CreateBrushModelNode( mMap.MapEntities[0] );
 			mMap.MapEntities.ForEach( mapEntity =>
 			{
@@ -184,7 +156,31 @@ namespace TestGame
 
 			mEntities.ForEach( entity => entity.PostSpawn() );
 
+			mClient = new()
+			{
+				Controller = CreateEntity<Entities.Player>()
+			};
+
 			mGameIsLoaded = true;
+		}
+
+		void LeaveGame()
+		{
+			if ( !mGameIsLoaded )
+			{
+				return;
+			}
+
+			Console.Log( "[Game] Leaving the game..." );
+
+			mMap = null;
+			mClient = null;
+			mEntities.ForEach( entity => entity.Destroy() );
+			mEntities.Clear();
+
+			mWorldspawnNode.QueueFree();
+
+			mGameIsLoaded = false;
 		}
 
 		private T CreateEntity<T>() where T : Entities.Entity, new()
@@ -197,13 +193,13 @@ namespace TestGame
 		}
 
 		private Client.Client? mClient;
+		private Client.MainMenu mMenu = new();
 		private List<Entities.Entity> mEntities = new();
 		private Assets.MapDocument? mMap;
 		private Node3D mWorldspawnNode;
 
 		private bool mGameIsLoaded = false;
 		private bool mEscapeWasHeld = false;
-		private Control? mRootControl = null;
 		private bool mUserWantsToExit = false;
 	}
 }
