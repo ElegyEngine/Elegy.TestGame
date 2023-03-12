@@ -118,6 +118,10 @@ namespace TestGame
 
 		private void StartGame( string mapFile )
 		{
+			if ( mGameIsLoaded )
+			{
+				LeaveGame();
+			}
 
 			Console.Log( Tag, $"Starting 'maps/{mapFile}'" );
 
