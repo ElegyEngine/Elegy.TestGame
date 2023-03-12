@@ -8,8 +8,6 @@ namespace TestGame.Entities
 		public override void PostSpawn()
 		{
 			base.PostSpawn();
-
-			Console.Log( $"Spawned func_breakable at {mRootNode.GlobalPosition}" );
 		}
 	}
 }

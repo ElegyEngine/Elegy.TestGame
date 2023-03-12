@@ -8,8 +8,6 @@ namespace TestGame.Entities
 		public override void PostSpawn()
 		{
 			base.PostSpawn();
-
-			Console.Log( $"FuncRotating: root node pos <{mRootNode.GlobalPosition}>" );
 		}
 
 		public override void PhysicsUpdate( float delta )
