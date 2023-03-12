@@ -98,17 +98,8 @@ namespace TestGame.Client
 
 		private OptionButton? MapSelection( Control parent )
 		{
-			string? mapsDirectory = FileSystem.PathTo( "maps", PathFlags.Directory );
-			if ( mapsDirectory is null )
-			{
-				MapErrorReport( parent, "There is no 'maps' folder, cannot load any maps!" );
-				return null;
-			}
-
-			Console.Log( $"[MainMenu] Maps directory: {mapsDirectory}" );
-
-			string[] mapFiles = Directory.GetFiles( mapsDirectory );
-			if ( mapFiles.Length <= 0 )
+			string[]? mapFiles = FileSystem.GetFiles( "maps" );
+			if ( mapFiles is null || mapFiles.Length <= 0 )
 			{
 				MapErrorReport( parent, "There are no map files in the 'maps' folder" );
 				return null;
@@ -117,9 +108,11 @@ namespace TestGame.Client
 			OptionButton button = parent.CreateChild<OptionButton>();
 			for ( int i = 0; i < mapFiles.Length; i++ )
 			{
-				// Strip off the 'game/maps/' part and replace \ with /
-				button.AddItem( mapFiles[i].Remove( 0, mapsDirectory.Length + 1 ).Replace( '\\', '/' ) );
+				// Strip off the 'game/maps/' part
+				int mapsOffset = mapFiles[i].Find( "/maps/" );
+				button.AddItem( mapFiles[i].Remove( 0, mapsOffset + 6 ) );
 			}
+
 			return button;
 		}
 
