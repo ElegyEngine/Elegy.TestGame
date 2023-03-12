@@ -12,6 +12,8 @@ namespace TestGame.Assets
 		public Material EngineMaterial;
 		public ImageTexture DiffuseTexture;
 
+		public const string Tag = "MapMaterial";
+
 		public int Width => DiffuseTexture?.GetWidth() ?? 128;
 		public int Height => DiffuseTexture?.GetHeight() ?? 128;
 
@@ -43,7 +45,7 @@ namespace TestGame.Assets
 			string path = $"textures/{materialName}.png";
 			if ( !FileSystem.Exists( path ) )
 			{
-				Console.Error( $"Cannot find image '{path}', oops" );
+				Console.Error( Tag, $"Cannot find image '{path}', oops" );
 				Materials.Add( materialName, Default ); // Performance optimisation
 				return Default;
 			}
@@ -139,6 +141,8 @@ namespace TestGame.Assets
 
 	public class MapDocument
 	{
+		public const string Tag = "MapDocument";
+
 		// ( x1 y1 z1 ) ( x2 y2 z2 ) ( x3 y3 z3 ) texture_name [ ux uy uz offsetX ] [ vx vy vz offsetY ] rotation scaleX scaleY
 		private static MapFace ParseFace( Lexer lex )
 		{
@@ -299,7 +303,7 @@ namespace TestGame.Assets
 			}
 			else
 			{
-				Console.Warning( $"[MapDocument] Entity does not have a classname! {lex.GetLineInfo()}" );
+				Console.Warning( Tag, $"Entity does not have a classname! {lex.GetLineInfo()}" );
 				entity.ClassName = "__empty";
 			}
 
@@ -325,7 +329,7 @@ namespace TestGame.Assets
 		{
 			if ( !FileSystem.Exists( path, PathFlags.File ) )
 			{
-				Console.Error( $"[MapDocument] Cannot find file '{path}', oops" );
+				Console.Error( Tag, $"Cannot find file '{path}', oops" );
 				return null;
 			}
 
@@ -337,7 +341,7 @@ namespace TestGame.Assets
 
 			File.ReadAllText( actualPath );
 
-			Console.Log( $"[MapDocument] Loading map '{actualPath}'..." );
+			Console.Log( Tag, $"Loading map '{actualPath}'..." );
 
 			MapDocument map = new();
 			try
@@ -363,8 +367,8 @@ namespace TestGame.Assets
 			}
 			catch ( Exception exception )
 			{
-				Console.Error( $"Error while parsing TB map: {exception.Message}" );
-				Console.Log( $"Stack trace: {exception.StackTrace}", ConsoleMessageType.Developer );
+				Console.Error( Tag, $"Error while parsing .map: {exception.Message}" );
+				Console.Log( Tag, $"Stack trace: {exception.StackTrace}", ConsoleMessageType.Developer );
 				return map;
 			}
 
@@ -383,7 +387,7 @@ namespace TestGame.Assets
 			}
 			catch ( Exception ex )
 			{
-				Console.Error( $"Exception: {ex.Message}\n{ex.StackTrace}" );
+				Console.Error( Tag, $"Exception: {ex.Message}\n{ex.StackTrace}" );
 			}
 
 			return map;
