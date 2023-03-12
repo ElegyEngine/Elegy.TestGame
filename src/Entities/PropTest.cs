@@ -35,6 +35,15 @@ namespace TestGame.Entities
 			}
 		}
 
+		public override void Destroy()
+		{
+			// The animation player is created as a global node,
+			// so it's gotta be cleaned up manually
+			mAnimationPlayer.QueueFree();
+
+			base.Destroy();
+		}
+
 		private ArrayMesh CreateTestMesh()
 		{
 			SurfaceTool st = new();
