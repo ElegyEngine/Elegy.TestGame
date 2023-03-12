@@ -9,24 +9,26 @@ namespace TestGame
 		public string Error { get; private set; } = string.Empty;
 		public bool Initialised { get; private set; } = false;
 
+		public const string Tag = "Game";
+
 		public bool Init()
 		{
-			Console.Log( "[Game] Init" );
+			Console.Log( Tag, "Init" );
 			Initialised = true;
 
 			Elegy.Assets.ApplicationConfig gameConfig = FileSystem.CurrentConfig;
 
-			Console.Log( $"[Game] Name: {gameConfig.Title}" );
+			Console.Log( Tag,   $"Name:      {gameConfig.Title}" );
 			Console.Log( $"       Developer: {gameConfig.Developer}" );
 			Console.Log( $"       Publisher: {gameConfig.Publisher}" );
-			Console.Log( $"       Version: {gameConfig.Version}" );
+			Console.Log( $"       Version:   {gameConfig.Version}" );
 
 			return true;
 		}
 
 		public bool Start()
 		{
-			Console.Log( "[Game] Start" );
+			Console.Log( Tag, "Start" );
 
 			mMenu.OnNewGame = ( string mapName ) =>
 			{
@@ -52,7 +54,7 @@ namespace TestGame
 
 		public void Shutdown()
 		{
-			Console.Log( "[Game] Shutdown" );
+			Console.Log( Tag, "Shutdown" );
 			
 			mEntities.Clear();
 			mClient = null;
@@ -116,12 +118,13 @@ namespace TestGame
 
 		private void StartGame( string mapFile )
 		{
-			Console.Log( $"[Game] Starting 'maps/{mapFile}'" );
+
+			Console.Log( Tag, $"Starting 'maps/{mapFile}'" );
 
 			mMap = Assets.MapDocument.FromValve220MapFile( $"maps/{mapFile}" );
-			if ( mMap == null )
+			if ( mMap is null )
 			{
-				Console.Error( $"[Game.StartGame] Failed to load 'maps/{mapFile}'" );
+				Console.Error( "Game.StartGame", $"Failed to load 'maps/{mapFile}'" );
 				return;
 			}
 
@@ -141,7 +144,7 @@ namespace TestGame
 				case "func_rotating": entity = CreateEntity<Entities.FuncRotating>(); break;
 				case "func_water": entity = CreateEntity<Entities.FuncWater>(); break;
 				case "prop_test": entity = CreateEntity<Entities.PropTest>(); break;
-				default: Console.Log( $"[Game.SpawnEntity]: unknown map entity class '{mapEntity.ClassName}'", ConsoleMessageType.Developer ); return;
+				default: Console.Log( "Game.StartGame", $"{Console.Yellow}Unknown map entity class {Console.White}'{mapEntity.ClassName}'", ConsoleMessageType.Developer ); return;
 				}
 
 				// This is a brush entity
@@ -161,6 +164,7 @@ namespace TestGame
 				Controller = CreateEntity<Entities.Player>()
 			};
 
+			Console.Success( Tag, "Map successfully loaded, enjoy" );
 			mGameIsLoaded = true;
 		}
 
@@ -171,7 +175,7 @@ namespace TestGame
 				return;
 			}
 
-			Console.Log( "[Game] Leaving the game..." );
+			Console.Log( Tag, "Leaving the game..." );
 
 			mMap = null;
 			mClient = null;
