@@ -11,6 +11,11 @@ namespace TestGame
 
 		public const string Tag = "Game";
 
+		public Game()
+		{
+
+		}
+
 		public bool Init()
 		{
 			Console.Log( Tag, "Init" );
