@@ -21,16 +21,8 @@ namespace TestGame.Entities
 
 			mShape = mBody.CreateChild<CollisionShape3D>();
 			mShape.Shape = mCapsule;
-		}
 
-		public override void Destroy()
-		{
-
-		}
-
-		public override void Think()
-		{
-
+			mRootNode = mBody;
 		}
 
 		public override void PhysicsUpdate( float delta )
