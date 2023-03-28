@@ -32,7 +32,7 @@ namespace TestGame.Assets
 
 		public static MapMaterial Load( string materialName )
 		{
-			if ( materialName == "NULL" || materialName == "ORIGIN" )
+			if ( materialName.StartsWith( "tools/" ) )
 			{
 				return Default;
 			}
@@ -75,7 +75,7 @@ namespace TestGame.Assets
 				material.AlphaScissorThreshold = 0.5f;
 				//material.CullMode = BaseMaterial3D.CullModeEnum.Disabled;
 			}
-			else if ( materialName[0] == '!' || materialName.StartsWith( "WATER" ) || materialName.Contains( "GLASS" ) )
+			else if ( materialName[0] == '!' || materialName.StartsWith( "water" ) || materialName.Contains( "glass" ) )
 			{
 				material.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
 				material.AlbedoColor = new Color( 1.0f, 1.0f, 1.0f, 0.5f );
