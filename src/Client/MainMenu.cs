@@ -10,7 +10,7 @@ namespace TestGame.Client
 	{
 		public MainMenu()
 		{
-			mRoot = Nodes.CreateNode<Control>();
+			mRoot = SetupControlAutoexpand<Control>( null, true, true );
 		}
 
 		public Action<string> OnNewGame { get; set; }
@@ -67,9 +67,9 @@ namespace TestGame.Client
 			}
 		}
 
-		private TControl SetupControlAutoexpand<TControl>( Control parent, bool anchor, bool fullRect = false ) where TControl : Control, new()
+		private TControl SetupControlAutoexpand<TControl>( Control? parent, bool anchor, bool fullRect = false ) where TControl : Control, new()
 		{
-			TControl control = parent.CreateChild<TControl>();
+			TControl control = parent?.CreateChild<TControl>() ?? Nodes.CreateNode<TControl>();
 
 			const SizeFlags sizeFlags = SizeFlags.ExpandFill;
 			control.SizeFlagsHorizontal = sizeFlags;
