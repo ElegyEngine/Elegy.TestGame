@@ -148,6 +148,7 @@ namespace TestGame
 				switch ( mapEntity.ClassName )
 				{
 				case "light": entity = CreateEntity<Entities.Light>(); break;
+				case "light_environment": entity = CreateEntity<Entities.LightEnvironment>(); break;
 				case "func_detail": entity = CreateEntity<Entities.FuncDetail>(); break;
 				case "func_breakable": entity = CreateEntity<Entities.FuncBreakable>(); break;
 				case "func_rotating": entity = CreateEntity<Entities.FuncRotating>(); break;
