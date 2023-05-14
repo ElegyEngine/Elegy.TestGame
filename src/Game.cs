@@ -1,6 +1,8 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using Elegy.Assets;
+
 namespace TestGame
 {
 	public class Game : IApplication
@@ -130,7 +132,7 @@ namespace TestGame
 
 			Console.Log( Tag, $"Starting 'maps/{mapFile}'" );
 
-			mMap = Assets.MapDocument.FromValve220MapFile( $"maps/{mapFile}" );
+			mMap = ElegyMapDocument.LoadFromFile( $"maps/{mapFile}" );
 			if ( mMap is null )
 			{
 				Console.Error( "Game.StartGame", $"Failed to load 'maps/{mapFile}'" );
@@ -139,13 +141,15 @@ namespace TestGame
 
 			mEntities = new();
 			
-			mWorldspawnNode = Assets.MapGeometry.CreateBrushModelNode( mMap.MapEntities[0] );
-			mMap.MapEntities.ForEach( mapEntity =>
+			mWorldspawnNode = Assets.MapGeometry.CreateBrushModelNode( mMap, 0 );
+			for ( int entityId = 0; entityId < mMap.Entities.Count; entityId++ )
 			{
+				var mapEntity = mMap.Entities[entityId];
 				Entities.Entity? entity = null;
 
 				// TODO: MapEntity attribute that glues the classname to the class
-				switch ( mapEntity.ClassName )
+				string className = mapEntity.Attributes["classname"];
+				switch ( className )
 				{
 				case "light": entity = CreateEntity<Entities.Light>(); break;
 				case "light_environment": entity = CreateEntity<Entities.LightEnvironment>(); break;
@@ -154,18 +158,18 @@ namespace TestGame
 				case "func_rotating": entity = CreateEntity<Entities.FuncRotating>(); break;
 				case "func_water": entity = CreateEntity<Entities.FuncWater>(); break;
 				case "prop_test": entity = CreateEntity<Entities.PropTest>(); break;
-				default: Console.Log( "Game.StartGame", $"{Console.Yellow}Unknown map entity class {Console.White}'{mapEntity.ClassName}'", ConsoleMessageType.Developer ); return;
+				default: Console.Log( "Game.StartGame", $"{Console.Yellow}Unknown map entity class {Console.White}'{className}'", ConsoleMessageType.Developer ); return;
 				}
 
 				// This is a brush entity
-				if ( mapEntity.Brushes.Count > 0 )
+				if ( mapEntity.RenderMeshId != -1 )
 				{
-					entity.AddBrushModel( mapEntity );
+					entity.AddBrushModel( mMap, entityId );
 				}
 
 				// Actually KeyValue should be called BEFORE Spawn, but oh well
-				entity.KeyValue( mapEntity.Pairs );
-			} );
+				entity.KeyValue( mapEntity.Attributes );
+			}
 
 			mEntities.ForEach( entity => entity.PostSpawn() );
 
@@ -209,7 +213,7 @@ namespace TestGame
 		private Client.Client? mClient;
 		private Client.MainMenu mMenu = new();
 		private List<Entities.Entity> mEntities = new();
-		private Assets.MapDocument? mMap;
+		private ElegyMapDocument? mMap;
 		private Node3D mWorldspawnNode;
 
 		private bool mGameIsLoaded = false;

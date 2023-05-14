@@ -1,6 +1,7 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using Elegy.Assets;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TestGame.Entities
@@ -46,9 +47,9 @@ namespace TestGame.Entities
 		}
 
 		// This is a very very improper way to do this, but I needed it for a quick way of setting a brush model
-		public void AddBrushModel( Assets.MapEntity mapEntity )
+		public void AddBrushModel( ElegyMapDocument map, int entityId )
 		{
-			mComponents.Add( Assets.MapGeometry.CreateBrushModelNode( mapEntity ) );
+			mComponents.Add( Assets.MapGeometry.CreateBrushModelNode( map, entityId ) );
 			if ( mRootNode == null )
 			{
 				mRootNode = mComponents.Last() as Node3D;
