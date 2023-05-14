@@ -98,7 +98,7 @@ namespace TestGame.Client
 
 		private OptionButton? MapSelection( Control parent )
 		{
-			string[]? mapFiles = FileSystem.GetFiles( "maps", "*.map", true );
+			string[]? mapFiles = FileSystem.GetFiles( "maps", "*.elf", true );
 			if ( mapFiles is null || mapFiles.Length <= 0 )
 			{
 				MapErrorReport( parent, "There are no map files in the 'maps' folder" );
