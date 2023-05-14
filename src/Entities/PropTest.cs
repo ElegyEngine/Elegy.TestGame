@@ -1,6 +1,8 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using Game.Assets;
+
 namespace TestGame.Entities
 {
 	public class PropTest : Entity
@@ -69,7 +71,7 @@ namespace TestGame.Entities
 			st.AddVertex( new( 1.0f, 0.0f, 0.0f ) );
 
 			st.GenerateTangents();
-			st.SetMaterial( Assets.MapMaterial.Load( "OUT_RK3" ).EngineMaterial );
+			st.SetMaterial( MaterialManager.MissingMaterial );
 
 			return st.Commit();
 		}
