@@ -130,9 +130,15 @@ namespace TestGame
 				LeaveGame();
 			}
 
-			Console.Log( Tag, $"Starting 'maps/{mapFile}'" );
+			Console.Log( Tag, $"Starting 'maps/{mapFile}'..." );
+			string? mapPath = FileSystem.PathTo( $"maps/{mapFile}", PathFlags.File );
+			if ( mapPath is null )
+			{
+				Console.Error( "Game.StartGame", $"Cannot load 'maps/{mapFile}', it doesn't exist" );
+				return;
+			}
 
-			mMap = ElegyMapDocument.LoadFromFile( $"maps/{mapFile}" );
+			mMap = ElegyMapDocument.LoadFromFile( mapPath );
 			if ( mMap is null )
 			{
 				Console.Error( "Game.StartGame", $"Failed to load 'maps/{mapFile}'" );
@@ -158,7 +164,7 @@ namespace TestGame
 				case "func_rotating": entity = CreateEntity<Entities.FuncRotating>(); break;
 				case "func_water": entity = CreateEntity<Entities.FuncWater>(); break;
 				case "prop_test": entity = CreateEntity<Entities.PropTest>(); break;
-				default: Console.Log( "Game.StartGame", $"{Console.Yellow}Unknown map entity class {Console.White}'{className}'", ConsoleMessageType.Developer ); return;
+				default: Console.Log( "Game.StartGame", $"{Console.Yellow}Unknown map entity class {Console.White}'{className}'", ConsoleMessageType.Developer ); continue;
 				}
 
 				// This is a brush entity
