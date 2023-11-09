@@ -157,6 +157,7 @@ namespace TestGame
 				string className = mapEntity.Attributes["classname"];
 				switch ( className )
 				{
+				case "info_player_start": entity = CreateEntity<Entities.InfoPlayerStart>(); break;
 				case "light": entity = CreateEntity<Entities.Light>(); break;
 				case "light_environment": entity = CreateEntity<Entities.LightEnvironment>(); break;
 				case "func_detail": entity = CreateEntity<Entities.FuncDetail>(); break;
@@ -181,7 +182,7 @@ namespace TestGame
 
 			mClient = new()
 			{
-				Controller = CreateEntity<Entities.Player>()
+				Controller = FindEntity<Entities.InfoPlayerStart>()?.SpawnPlayer( this ) ?? CreateEntity<Entities.Player>()
 			};
 
 			Console.Success( Tag, "Map successfully loaded, enjoy" );
@@ -207,7 +208,11 @@ namespace TestGame
 			mGameIsLoaded = false;
 		}
 
-		private T CreateEntity<T>() where T : Entities.Entity, new()
+		#region Move elsewhere
+
+		// TODO: manage entities elsewhere
+		// PROPER ENTITY SYSTEM REQUIRED
+		public T CreateEntity<T>() where T : Entities.Entity, new()
 		{
 			T entity = new();
 			entity.Spawn();
@@ -215,6 +220,21 @@ namespace TestGame
 
 			return entity;
 		}
+
+		public T? FindEntity<T>() where T : Entities.Entity
+		{
+			foreach ( var entity in mEntities )
+			{
+				if ( entity is T )
+				{
+					return entity as T;
+				}
+			}
+
+			return null;
+		}
+
+		#endregion
 
 		private Client.Client? mClient;
 		private Client.MainMenu mMenu = new();

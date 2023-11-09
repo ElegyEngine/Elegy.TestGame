@@ -2,12 +2,19 @@
 // SPDX-License-Identifier: MIT
 
 using Elegy.Assets;
+using Godot;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TestGame.Entities
 {
 	public abstract class Entity
 	{
+		public Vector3 Position
+		{
+			get => mRootNode.GlobalPosition;
+			set => mRootNode.GlobalPosition = value;
+		}
+
 		public virtual void Spawn()
 		{
 
@@ -20,10 +27,9 @@ namespace TestGame.Entities
 
 		public virtual void KeyValue( Dictionary<string, string> pairs )
 		{
-			// The origin is already converted to Godot units
 			if ( pairs.TryGetValue( "origin", out string? originString ) )
 			{
-				mRootNode.GlobalPosition = originString.ToVector3();
+				mRootNode.GlobalPosition = originString.ToVector3().ToGodot();
 			}
 		}
 
