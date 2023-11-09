@@ -1,8 +1,6 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
-using Game.Assets;
-
 namespace TestGame.Entities
 {
 	public class PropTest : Entity
@@ -71,7 +69,12 @@ namespace TestGame.Entities
 			st.AddVertex( new( 1.0f, 0.0f, 0.0f ) );
 
 			st.GenerateTangents();
-			st.SetMaterial( MaterialManager.MissingMaterial );
+			st.SetMaterial( new StandardMaterial3D()
+			{
+				AlbedoColor = Color.Color8( 255, 128, 192 ),
+				MetallicSpecular = 0.5f,
+				Roughness = 0.5f
+			} );
 
 			return st.Commit();
 		}
