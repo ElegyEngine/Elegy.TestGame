@@ -1,10 +1,10 @@
 ﻿// SPDX-FileCopyrightText: 2022-2023 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using Elegy;
 using Elegy.Assets;
 using Elegy.Assets.ElegyMapData;
 using Elegy.Geometry;
-using Game.Assets;
 
 namespace TestGame.Assets
 {
@@ -29,7 +29,7 @@ namespace TestGame.Assets
 		}
 
 		public static Node3D CreateBrushModelNode( ElegyMapDocument map, int brushEntityId )
-		{
+		{ 
 			var brushEntity = map.Entities[brushEntityId];
 			var brushMesh = map.RenderMeshes[brushEntity.RenderMeshId];
 
@@ -44,7 +44,7 @@ namespace TestGame.Assets
 
 			foreach ( var materialString in renderSurfaces.Keys )
 			{
-				materialDictionary[materialString] = MaterialManager.GetMaterial( materialString );
+				materialDictionary[materialString] = Materials.LoadMaterial( materialString );
 			}
 
 			ArrayMesh mesh = new ArrayMesh();
