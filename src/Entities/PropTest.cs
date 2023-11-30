@@ -22,6 +22,8 @@ namespace TestGame.Entities
 				{
 					mMesh = mRootNode.CreateChild<MeshInstance3D>();
 					mMesh.Mesh = Assets.GLTFModel.Load( modelPath );
+					// TODO: just like how we have a MaterialSystem now, it'd be good to have:
+					//mMesh = Models.Load( modelPath );
 				}
 				else
 				{
