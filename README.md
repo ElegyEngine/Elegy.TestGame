@@ -1,6 +1,10 @@
 
 # Elegy.Engine test game plugin
 
+### *Note: moved to a unified repository at [Elegy.Engine](https://github.com/ElegyEngine/ElegyEngine)*
+
+----------
+
 [BodotPoc](https://github.com/Admer456/bodot-poc) but as an [Elegy Engine](https://github.com/ElegyEngine/ElegyEngine) plugin.
 
 Explanations, guides, as well as actual example assets, are coming later in 2023.
